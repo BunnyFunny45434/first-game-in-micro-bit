@@ -23,8 +23,18 @@ list = 2
 up_and_down = 2
 sprite.set(LedSpriteProperty.X, list)
 sprite.set(LedSpriteProperty.Y, up_and_down)
-game.addLife(1)
-game.startCountdown(30000)
+game.setLife(10)
+let score = 0
+basic.forever(function () {
+    if (game.isRunning()) {
+        score += 1
+        basic.pause(1000)
+    }
+    if (game.isGameOver()) {
+        basic.showString("your score is")
+        basic.showNumber(score)
+    }
+})
 basic.forever(function () {
     if (100 < randint(0, 110)) {
         enemy.move(randint(1, -1))
@@ -34,7 +44,11 @@ basic.forever(function () {
         enemy.turn(Direction.Right, 90)
         enemy.ifOnEdgeBounce()
     }
+})
+basic.forever(function () {
     if (sprite.isTouching(enemy)) {
-        game.addScore(1)
+        game.removeLife(1)
+        basic.pause(2000)
+        score += -1
     }
 })
